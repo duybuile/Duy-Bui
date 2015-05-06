@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Salary prediction</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Salary prediction">
+  <meta name="author" content="Duy Bui">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Salary prediction</h1>
+    <h2>Predict human wages based on their status</h2>
+    <p>Duy Bui<br/>Data Scientist</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Problem Overview</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Advantages</h3>
+
+<ul>
+<li>Salary prediction is useful for tax companies to detect any frauds within tax payments. </li>
+<li>Meaningful for demographic purposes</li>
+</ul>
+
+<h3>Idea</h3>
+
+<ul>
+<li>Create a trustful and confident prediction model having a high accuracy in predicting somebody&#39;s salary based on his/her personal information. We predict whether income exceeds $50K/yr based on census data</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Data pre-processs</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Data source</h3>
+
+<ul>
+<li>UCI Database: <a href="http://archive.ics.uci.edu/ml/datasets/Adult">http://archive.ics.uci.edu/ml/datasets/Adult</a> </li>
+<li>Data was collected by Barry Becker from the 1994 (32561 instances, 14 attributes)</li>
+<li>Attributes: age, workclass, fnlwgt, education, education-num, marital-status, occupation, race, sex, capital-gain, capital-loss, hours-per-week, native-country.</li>
+</ul>
+
+<pre><code class="r">adultData &lt;- read.table(&quot;adult.data&quot;, header = FALSE, sep = &quot;,&quot;, strip.white = TRUE)
+adultName &lt;- read.csv(&quot;adult.name.csv&quot;, header = FALSE, sep = &quot;,&quot;, stringsAsFactors = FALSE)
+names(adultData) &lt;- adultName[, 1]
+</code></pre>
+
+<h3>Data selection</h3>
+
+<p>It is ideal to use the whole dataset as training set. However, the training session will consume much time which causes users&#39; impatience.  The data therefore was reduced to only containing 7 attributes. The selection is entirely based on developers&#39; preferences.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Machine Learning method</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>There are numerous machine learning methods, however &quot;Recusive Partitioning&quot; was chosen in this model due to its light-weight and quickness. When it comes to speed testing, &quot;Recusive Partitioning&quot; always out-performs other machine learning methods such as &quot;Random Forest&quot;, or &quot;Boosting&quot;, while its model accuracy within this data set is sufficiently acceptable with more than 80%.</p>
+
+<pre><code class="r">trainIndex = createDataPartition(adultData$salary, p=0.70, list=FALSE)
+training = adultData[ trainIndex, ];testing = adultData[-trainIndex, ]
+set.seed(33833)
+modFit &lt;- train(salary ~ ., method = &quot;rpart&quot;, data=training)
+confusionMatrix(testing$salary, predict(modFit, newdata = testing))$overall
+</code></pre>
+
+<pre><code>FALSE       Accuracy          Kappa  AccuracyLower  AccuracyUpper   AccuracyNull 
+FALSE   8.070229e-01   3.680702e-01   7.990546e-01   8.148077e-01   8.754095e-01 
+FALSE AccuracyPValue  McnemarPValue 
+FALSE   1.000000e+00  2.215460e-150
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Summary</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Result</h3>
+
+<ul>
+<li>Application <a href="https://duybuile.shinyapps.io/Assignment1">https://duybuile.shinyapps.io/Assignment1</a> </li>
+<li>High accuracy machine learning model</li>
+</ul>
+
+<h3>Conclusion</h3>
+
+<ul>
+<li>Practice of machine learning, data production</li>
+<li>Tools: shinyapps, slidify</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Problem Overview'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Data pre-processs'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Machine Learning method'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Summary'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
