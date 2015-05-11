@@ -9,6 +9,9 @@ hitheme     : tomorrow      #
 widgets     : [mathjax]     # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
+github:
+  user: duybuile
+  repo: slidifyproject
 ---
 
 ## Problem Overview
