@@ -11,7 +11,7 @@ mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
 github:
   user: duybuile
-  repo: slidifyproject
+  repo: Duy-Bui
 ---
 
 ## Problem Overview
